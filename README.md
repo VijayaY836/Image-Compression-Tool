@@ -4,6 +4,8 @@ A fast, private, browser-based tool for compressing images and seeing **exactly*
 
 Everything runs locally in your browser. **No image is ever uploaded to a server.**
 
+Demo Video : https://drive.google.com/file/d/1Xwg7ZSzxZuP0IHHGuaSoGEdf1XSpPAbu/view?usp=sharing
+
 
 ---
 
