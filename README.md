@@ -4,8 +4,6 @@ A fast, private, browser-based tool for compressing images and seeing **exactly*
 
 Everything runs locally in your browser. **No image is ever uploaded to a server.**
 
-![Light, colorful UI with an original / compressed comparison and a control console](docs/screenshot.png)
-<!-- Add a screenshot at docs/screenshot.png, or delete this line. -->
 
 ---
 
@@ -121,4 +119,4 @@ All processing happens locally in your browser using the Canvas API. Your images
 
 ## License
 
-No license specified yet. Add one (e.g. [MIT](https://choosealicense.com/licenses/mit/)) if you plan to share or open-source this project.
+No license specified yet. 
