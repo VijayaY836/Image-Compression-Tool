@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aperture — Compression Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◐</span>
+    <span class="brand-name">APERTURE</span>
+  </div>
+  <span class="eyebrow">image compression bench</span>
+</header>
+
+<main>
+
+  <!-- ============ UPLOAD STAGE ============ -->
+  <section id="uploadStage" class="upload-stage">
+    <label for="fileInput" class="dropzone" id="dropzone">
+      <div class="dropzone-inner">
+        <div class="dropzone-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="52" height="52">
+            <rect x="8" y="14" width="48" height="38" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="20" cy="26" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 44 L22 32 L32 40 L42 28 L56 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="dropzone-title">Load an image onto the bench</p>
+        <p class="dropzone-sub">Drag &amp; drop, or click to browse &nbsp;·&nbsp; JPG, PNG, WebP</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" hidden>
+    </label>
+  </section>
+
+  <!-- ============ BENCH STAGE ============ -->
+  <section id="benchStage" class="bench-stage hidden">
+
+    <div class="bench-toolbar">
+      <div class="file-chip">
+        <span class="file-chip-dot"></span>
+        <span id="fileName">—</span>
+      </div>
+      <button id="loadNewBtn" class="ghost-btn">Load different image</button>
+    </div>
+
+    <div class="compare-grid">
+      <!-- ORIGINAL -->
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-tag tag-original">ORIGINAL</span>
+          <span class="panel-format" id="originalFormat">—</span>
+        </div>
+        <div class="image-well">
+          <img id="originalImg" alt="Original upload">
+        </div>
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>Size</dt><dd id="originalSize">—</dd>
+          </div>
+          <div class="readout-row">
+            <dt>Dimensions</dt><dd id="originalDims">—</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- COMPRESSED -->
+      <div class="panel panel-active">
+        <div class="panel-head">
+          <span class="panel-tag tag-compressed">COMPRESSED</span>
+          <span class="panel-format" id="compressedFormat">JPEG</span>
+        </div>
+        <div class="image-well">
+          <img id="compressedImg" alt="Compressed preview">
+          <div class="well-loading" id="wellLoading"><span>rendering…</span></div>
+        </div>
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>Size</dt><dd id="compressedSize">—</dd>
+          </div>
+          <div class="readout-row">
+            <dt>Dimensions</dt><dd id="compressedDims">—</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- ============ CONSOLE ============ -->
+    <div class="console">
+
+      <div class="console-left">
+        <div class="fader-block">
+          <div class="fader-label-row">
+            <label for="qualitySlider" class="fader-label">QUALITY</label>
+            <div class="lcd" id="qualityLcd">72<span class="lcd-unit">%</span></div>
+          </div>
+          <input type="range" id="qualitySlider" min="1" max="100" value="72" step="1">
+          <div class="fader-ticks" aria-hidden="true">
+            <span>1</span><span>25</span><span>50</span><span>75</span><span>100</span>
+          </div>
+        </div>
+
+        <div class="format-block">
+          <span class="fader-label">OUTPUT FORMAT</span>
+          <div class="format-toggle" id="formatToggle">
+            <button type="button" class="format-opt active" data-format="image/jpeg">JPEG</button>
+            <button type="button" class="format-opt" data-format="image/webp">WebP</button>
+            <button type="button" class="format-opt" data-format="image/png">PNG</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="console-right">
+        <div class="metric">
+          <span class="metric-label">Compression ratio</span>
+          <span class="metric-value" id="metricRatio">—</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Space saved</span>
+          <span class="metric-value" id="metricSaved">—</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Est. quality loss</span>
+          <span class="metric-value" id="metricQuality">—</span>
+        </div>
+        <div class="metric metric-psnr">
+          <span class="metric-label">PSNR</span>
+          <span class="metric-value" id="metricPsnr">—</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="download-row">
+      <a id="downloadBtn" class="download-btn" download>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0l-3.5-3.5M8 10l3.5-3.5M2 13h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download compressed image
+      </a>
+      <span class="download-hint" id="downloadHint">—</span>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>All processing happens locally in your browser. Nothing is uploaded.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
